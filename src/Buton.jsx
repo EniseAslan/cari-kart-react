@@ -1,9 +1,11 @@
 import React from 'react'
 
-function Buton() {
+function Buton({ekleme}) {
   return (
     <div>
-      <button className="btn btn-primary counter">Yeni Cari Ekle</button>
+      <button className="btn btn-primary counter" onClick={ekleme}>
+        Yeni Cari Ekle
+      </button>
     </div>
   )
 }

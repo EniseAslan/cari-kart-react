@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Baslik() {
+function Baslik({baslikMenu}) {
   return (
     <div>
-        <h1>Cari Kart Yönetimi</h1>
+        <h1>{baslikMenu}</h1>
     </div>
   )
 }

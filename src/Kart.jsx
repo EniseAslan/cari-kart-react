@@ -1,13 +1,15 @@
-import React from 'react'
+import React from "react";
 
-function Kart() {
+function Kart({ unvan, vergiNo, caritip, durum, sehir }) {
   return (
     <div>
-       <h2>FEMA Yazılım</h2>
-      <p>Vergi No: 1023456789</p>
-      <p>Tip: Müşteri</p>
+      <h2>{unvan}</h2>
+      <p>Vergi No: {vergiNo}</p>
+      <p>Tip: {caritip}</p>
+      <p>Durum: {durum}</p>
+      <p>Şehir: {sehir}</p>
     </div>
-  )
+  );
 }
 
-export default Kart
+export default Kart;
