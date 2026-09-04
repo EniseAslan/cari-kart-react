@@ -1,41 +1,91 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import Baslik from './Baslik'
-import Buton from './Buton'
-import Kart from './Kart'
-import './App.css'
+import { useState } from "react";
+import Baslik from "./Baslik";
+import Buton from "./Buton";
+import Kart from "./Kart";
+import "./App.css";
 
 function App() {
-  const [sayac, setSayac] = useState(0)
-  const [durum,setDurum]=useState("Aktif");
+  const [sayac, setSayac] = useState(0);
+  const [durum, setDurum] = useState("Aktif");
 
-
-  const handleChange=(event)=>{
+  const handleChange = (event) => {
     setDurum(event.target.value);
   };
 
+  //geçici cari dizi tanımlandı
+  const cariler = [
+    {
+      id: 1,
+      unvan: "FEMA Yazılım",
+      vergiNo: "1023456789",
+      caritip: "Müşteri",
+      durum: "Aktif",
+      sehir: "İstanbul",
+    },
+    {
+      id: 2,
+      unvan: "ABC Teknoloji",
+      vergiNo: "9876543210",
+      caritip: "Tedarikçi",
+      durum: "Pasif",
+      sehir: "Ankara",
+    },
+    {
+      id: 3,
+      unvan: "DEF Bilişim",
+      vergiNo: "1234567890",
+      caritip: "Müşteri",
+      durum: "Aktif",
+      sehir: "Edirne",
+    },
+  ];
+
+  const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
+  const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
+
   return (
     <>
-    <div>
-    <select onChange={handleChange} value={durum} >
-      <option value="Aktif">Aktif</option>
-      <option value="Pasif">Pasif</option>
-    </select>
-    <p>Kullanıcı: {durum}</p>
-    </div>
-    <div>
-     
-    
-      <Baslik baslikMenu="Cari Kart Yönetimi" />
-      <Buton ekleme={() => setSayac(sayac+1)} />
-         <p>Eklenen Cari Sayısı: {sayac}</p>
-      <Kart unvan="FEMA Yazılım" vergiNo="1023456789" caritip="Müşteri" durum="Aktif" sehir="İstanbul" />
-      <Kart unvan="ABC Teknoloji" vergiNo="9876543210" caritip="Tedarikçi" durum="Pasif" sehir="Ankara" />
-     </div>
+      <div>
+        <select onChange={handleChange} value={durum}>
+          <option value="Aktif">Aktif</option>
+          <option value="Pasif">Pasif</option>
+        </select>
+        <p>Kullanıcı: {durum}</p>
+      </div>
+      <div>
+        <Baslik baslikMenu="Cari Kart Yönetimi" />
+        <Buton ekleme={() => setSayac(sayac + 1)} />
+        <p>Eklenen Cari Sayısı: {sayac}</p>
+      </div>
+
+      <div>
+        <h3>Cariler Listesi</h3>
+        <h4>Aktif Cariler</h4>
+        {aktifCari.map((cari) => (
+          <Kart
+            key={cari.id}
+            unvan={cari.unvan}
+            vergiNo={cari.vergiNo}
+            caritip={cari.caritip}
+            durum={cari.durum}
+            sehir={cari.sehir}
+          />
+        ))}
+
+        <h4>Pasif Cariler</h4>
+        {pasifCari.map((cari) => (
+          <Kart
+            key={cari.id}
+            unvan={cari.unvan}
+            vergiNo={cari.vergiNo}
+            caritip={cari.caritip}
+            durum={cari.durum}
+            sehir={cari.sehir}
+          />
+        ))}
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
