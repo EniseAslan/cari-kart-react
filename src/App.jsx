@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Baslik from "./Baslik";
 import Buton from "./Buton";
 import Kart from "./Kart";
@@ -7,10 +7,30 @@ import "./App.css";
 function App() {
   const [sayac, setSayac] = useState(0);
   const [durum, setDurum] = useState("Aktif");
+  const [form, setForm] =useState({
+    unvan: "",
+    vergiNo:"",
+    caritip:"Müşteri",
+    sehir:"",
+
+  })
 
   const handleChange = (event) => {
     setDurum(event.target.value);
   };
+
+const handleFormChange =(e)=>{
+  const {name, value } = e.target;setForm((prev)=>({...prev, [name]: value}))
+}
+
+//Kaydetme işlemi
+
+const handleSubmit=(e)=>{
+  e.preventDefault();
+  console.log("kaydedilecek cari:",form);
+  setForm({ unvan:"", vergiNo:"",caritip:"",sehir: "", durum:""});
+};
+
 
   //geçici cari dizi tanımlandı
   const cariler = [
@@ -45,6 +65,44 @@ function App() {
 
   return (
     <>
+<div>
+  <input
+  type="text"
+  name="unvan"
+  placeholder="Ünvan yazınız"
+  value={form.unvan}
+  onChange={handleFormChange}
+/>
+  <p>Unvan: {form.unvan}</p>
+
+ <input
+  type="text"
+  name="vergiNo"
+  placeholder="vergi no giriniz"
+  value={form.vergiNo}
+  onChange={handleFormChange}
+/>
+  <p>Vergi No: {form.vergiNo}</p>
+
+
+  <input type="text"
+  name="sehir"
+  placeholder="Sehri giriniz"
+  value={form.sehir}
+  onChange={handleFormChange} />
+
+  <p>Sehir:  {form.sehir}  </p>
+
+  <select name="caritip" value={form.caritip} onChange={handleFormChange}>
+    <option value="Müşteri">Müşteri</option>
+    <option value="Tedarikçi">Tedarikçi</option>
+
+  </select>
+  <p>Cari Tipi: {form.caritip}</p>
+<button onClick={handleSubmit}>Kaydet</button>
+  
+</div>
+
       <div>
         <select onChange={handleChange} value={durum}>
           <option value="Aktif">Aktif</option>
@@ -52,6 +110,9 @@ function App() {
         </select>
         <p>Kullanıcı: {durum}</p>
       </div>
+
+
+      
       <div>
         <Baslik baslikMenu="Cari Kart Yönetimi" />
         <Buton ekleme={() => setSayac(sayac + 1)} />
