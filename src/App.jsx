@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Baslik from "./Baslik";
 import Buton from "./Buton";
 import Kart from "./Kart";
+import CariList from "./CariList"
 import "./App.css";
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
   });
 
   const [cariler, setCariler] = useState([]);
+
+  
 
   useEffect(() => {
     const mockVeri = [
@@ -44,7 +47,7 @@ function App() {
       },
     ];
     setCariler(mockVeri);
-  }, []); // ← boş dizi çok önemli, birazdan açıklayacağım
+  }, []);
 
   const handleChange = (event) => {
     setDurum(event.target.value);
@@ -62,6 +65,12 @@ function App() {
     console.log("kaydedilecek cari:", form);
     setForm({ unvan: "", vergiNo: "", caritip: "", sehir: "Müşteri", durum: "" });
   };
+
+  //Kaldırma işlemi
+
+  const cariSilme=(id)=>{
+    setCariler((prev)=>prev.filter((cari)=>cari.id !==id))
+  }
 
   const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
   const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
@@ -105,6 +114,7 @@ function App() {
         <button onClick={handleSubmit}>Kaydet</button>
       </div>
 
+<CariList cariler= {cariler} onKaldir={cariSilme}></CariList>
       <div>
         <select onChange={handleChange} value={durum}>
           <option value="Aktif">Aktif</option>
@@ -119,32 +129,7 @@ function App() {
         <p>Eklenen Cari Sayısı: {sayac}</p>
       </div>
 
-      <div>
-        <h3>Cariler Listesi</h3>
-        <h4>Aktif Cariler</h4>
-        {aktifCari.map((cari) => (
-          <Kart
-            key={cari.id}
-            unvan={cari.unvan}
-            vergiNo={cari.vergiNo}
-            caritip={cari.caritip}
-            durum={cari.durum}
-            sehir={cari.sehir}
-          />
-        ))}
-
-        <h4>Pasif Cariler</h4>
-        {pasifCari.map((cari) => (
-          <Kart
-            key={cari.id}
-            unvan={cari.unvan}
-            vergiNo={cari.vergiNo}
-            caritip={cari.caritip}
-            durum={cari.durum}
-            sehir={cari.sehir}
-          />
-        ))}
-      </div>
+   
     </>
   );
 }
