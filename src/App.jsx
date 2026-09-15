@@ -2,22 +2,22 @@ import { useState, useEffect } from "react";
 import Baslik from "./Baslik";
 import Buton from "./Buton";
 import Kart from "./Kart";
-import CariList from "./CariList"
+import CariList from "./CariList";
 import "./App.css";
+import CariForm from "./CariForm";
 
 function App() {
   const [sayac, setSayac] = useState(0);
-  const [durum, setDurum] = useState("Aktif");
   const [form, setForm] = useState({
     unvan: "",
     vergiNo: "",
     caritip: "Müşteri",
     sehir: "",
+    durum: "Aktif",
   });
 
   const [cariler, setCariler] = useState([]);
-
-  
+  const [duzenlenenCari, setduzenlenenCari] = useState(null);
 
   useEffect(() => {
     const mockVeri = [
@@ -49,10 +49,6 @@ function App() {
     setCariler(mockVeri);
   }, []);
 
-  const handleChange = (event) => {
-    setDurum(event.target.value);
-  };
-
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -62,74 +58,68 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("kaydedilecek cari:", form);
-    setForm({ unvan: "", vergiNo: "", caritip: "", sehir: "Müşteri", durum: "" });
+
+    if (duzenlenenCari === null) {
+      // EKLEME
+      const yeniId =
+        cariler.length === 0 ? 1 : Math.max(...cariler.map((c) => c.id)) + 1;
+      const yeniCari = { id: yeniId, ...form };
+      setCariler((prev) => [...prev, yeniCari]);
+    } else {
+      // DÜZENLEME
+      setCariler((prev) =>
+        prev.map((cari) =>
+          cari.id === duzenlenenCari ? { ...cari, ...form } : cari,
+        ),
+      );
+    }
+
+    setForm({
+      unvan: "",
+      vergiNo: "",
+      caritip: "Müşteri",
+      sehir: "",
+      durum: "Aktif",
+    });
+    setduzenlenenCari(null);
   };
 
   //Kaldırma işlemi
 
-  const cariSilme=(id)=>{
-    setCariler((prev)=>prev.filter((cari)=>cari.id !==id))
-  }
+  const cariSilme = (id) => {
+    setCariler((prev) => prev.filter((cari) => cari.id !== id));
+  };
+
+  //düzenleme işlemi
+
+  const duzenleme = (cari) => {
+    setduzenlenenCari(cari.id);
+    setForm({
+      unvan: cari.unvan,
+      vergiNo: cari.vergiNo,
+      caritip: cari.caritip,
+      sehir: cari.sehir,
+      durum: cari.durum,
+    });
+  };
 
   const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
   const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          name="unvan"
-          placeholder="Ünvan yazınız"
-          value={form.unvan}
-          onChange={handleFormChange}
-        />
-        <p>Unvan: {form.unvan}</p>
-
-        <input
-          type="text"
-          name="vergiNo"
-          placeholder="vergi no giriniz"
-          value={form.vergiNo}
-          onChange={handleFormChange}
-        />
-        <p>Vergi No: {form.vergiNo}</p>
-
-        <input
-          type="text"
-          name="sehir"
-          placeholder="Sehri giriniz"
-          value={form.sehir}
-          onChange={handleFormChange}
-        />
-
-        <p>Sehir: {form.sehir} </p>
-
-        <select name="caritip" value={form.caritip} onChange={handleFormChange}>
-          <option value="Müşteri">Müşteri</option>
-          <option value="Tedarikçi">Tedarikçi</option>
-        </select>
-        <p>Cari Tipi: {form.caritip}</p>
-        <button onClick={handleSubmit}>Kaydet</button>
-      </div>
-
-<CariList cariler= {cariler} onKaldir={cariSilme}></CariList>
-      <div>
-        <select onChange={handleChange} value={durum}>
-          <option value="Aktif">Aktif</option>
-          <option value="Pasif">Pasif</option>
-        </select>
-        <p>Kullanıcı: {durum}</p>
-      </div>
+    <CariForm form={form} onFormChange={handleFormChange} onSubmit={handleSubmit}></CariForm>
+      <CariList
+        cariler={cariler}
+        onKaldir={cariSilme}
+        onDuzenle={duzenleme}
+      ></CariList>
 
       <div>
         <Baslik baslikMenu="Cari Kart Yönetimi" />
         <Buton ekleme={() => setSayac(sayac + 1)} />
         <p>Eklenen Cari Sayısı: {sayac}</p>
       </div>
-
-   
     </>
   );
 }
