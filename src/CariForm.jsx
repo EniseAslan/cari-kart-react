@@ -1,6 +1,12 @@
 import React from "react";
+import { useState } from "react";
+import CariGrupModal from "./CariGrupModal";
+
 
 function CariForm({ form, onFormChange, onSubmit }) {
+
+  const [modalAcik, setModalAcik]=useState(false);
+
   return (
     <>
       <input
@@ -44,6 +50,8 @@ function CariForm({ form, onFormChange, onSubmit }) {
 
       <p>Durum:{form.durum}</p>
       <button onClick={onSubmit}>Kaydet</button>
+      <button onClick={()=> setModalAcik(true)}>Grup Seç</button>
+      {modalAcik && <CariGrupModal onKapat={()=>setModalAcik(false)}/>}
     </>
   );
 }
