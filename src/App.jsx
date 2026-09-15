@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import Baslik from "./Baslik";
-import Buton from "./Buton";
-import Kart from "./Kart";
 import CariList from "./CariList";
 import "./App.css";
 import CariForm from "./CariForm";
 
 function App() {
-  const [sayac, setSayac] = useState(0);
   const [form, setForm] = useState({
     unvan: "",
     vergiNo: "",
@@ -108,18 +105,17 @@ function App() {
 
   return (
     <>
-    <CariForm form={form} onFormChange={handleFormChange} onSubmit={handleSubmit}></CariForm>
+    <Baslik baslikMenu="Cari Kart Yönetimi"></Baslik>
+      <CariForm
+        form={form}
+        onFormChange={handleFormChange}
+        onSubmit={handleSubmit}
+      ></CariForm>
       <CariList
         cariler={cariler}
         onKaldir={cariSilme}
         onDuzenle={duzenleme}
       ></CariList>
-
-      <div>
-        <Baslik baslikMenu="Cari Kart Yönetimi" />
-        <Buton ekleme={() => setSayac(sayac + 1)} />
-        <p>Eklenen Cari Sayısı: {sayac}</p>
-      </div>
     </>
   );
 }
