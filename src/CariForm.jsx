@@ -3,7 +3,7 @@ import { useState } from "react";
 import CariGrupModal from "./CariGrupModal";
 
 
-function CariForm({ form, onFormChange, onSubmit }) {
+function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
 
   const [modalAcik, setModalAcik]=useState(false);
 
@@ -51,7 +51,8 @@ function CariForm({ form, onFormChange, onSubmit }) {
       <p>Durum:{form.durum}</p>
       <button onClick={onSubmit}>Kaydet</button>
       <button onClick={()=> setModalAcik(true)}>Grup Seç</button>
-      {modalAcik && <CariGrupModal onKapat={()=>setModalAcik(false)}/>}
+      {modalAcik && <CariGrupModal onKapat={()=>setModalAcik(false)}
+        onSec={onGrupSec}/>}
     </>
   );
 }

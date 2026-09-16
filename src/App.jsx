@@ -11,6 +11,8 @@ function App() {
     caritip: "Müşteri",
     sehir: "",
     durum: "Aktif",
+    grupAdi:"",
+    grupId:null,
   });
 
   const [cariler, setCariler] = useState([]);
@@ -77,6 +79,8 @@ function App() {
       caritip: "Müşteri",
       sehir: "",
       durum: "Aktif",
+      grupAdi:"",
+      grupId:null,
     });
     setduzenlenenCari(null);
   };
@@ -97,8 +101,20 @@ function App() {
       caritip: cari.caritip,
       sehir: cari.sehir,
       durum: cari.durum,
+      grupAdi:cari.grupAdi|| "",
+      grupId:cari.grupId|| null,
     });
   };
+
+  //Grup seçme fonksiyonu
+  const grupSecildi=(grup)=>{
+    setForm((prev)=>({
+      ...prev,
+      grupAdi:grup.adi,
+      grupId: grup.id,
+    }))
+  }
+
 
   const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
   const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
@@ -110,6 +126,7 @@ function App() {
         form={form}
         onFormChange={handleFormChange}
         onSubmit={handleSubmit}
+        onGrupSec={grupSecildi}
       ></CariForm>
       <CariList
         cariler={cariler}
