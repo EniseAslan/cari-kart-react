@@ -11,8 +11,8 @@ function App() {
     caritip: "Müşteri",
     sehir: "",
     durum: "Aktif",
-    grupAdi:"",
-    grupId:null,
+    grupAdi: "",
+    grupId: null,
   });
 
   const [cariler, setCariler] = useState([]);
@@ -50,6 +50,14 @@ function App() {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "vergiNo") {
+      if (value === "" || !isNaN(value)) {
+        setForm((prev) => ({ ...prev, vergiNo: value }));
+      }
+      return;
+    }
+
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -57,6 +65,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (form.vergiNo.length !== 10) {
+      alert("Vergi No 10 haneli olmalıdır.");
+      return;
+    }
 
     if (duzenlenenCari === null) {
       // EKLEME
@@ -79,8 +92,8 @@ function App() {
       caritip: "Müşteri",
       sehir: "",
       durum: "Aktif",
-      grupAdi:"",
-      grupId:null,
+      grupAdi: "",
+      grupId: null,
     });
     setduzenlenenCari(null);
   };
@@ -101,39 +114,40 @@ function App() {
       caritip: cari.caritip,
       sehir: cari.sehir,
       durum: cari.durum,
-      grupAdi:cari.grupAdi|| "",
-      grupId:cari.grupId|| null,
+      grupAdi: cari.grupAdi || "",
+      grupId: cari.grupId || null,
     });
   };
 
   //Grup seçme fonksiyonu
-  const grupSecildi=(grup)=>{
-    setForm((prev)=>({
+  const grupSecildi = (grup) => {
+    setForm((prev) => ({
       ...prev,
-      grupAdi:grup.adi,
+      grupAdi: grup.adi,
       grupId: grup.id,
-    }))
-  }
-
+    }));
+  };
 
   const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
   const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
 
   return (
-    <>
-    <Baslik baslikMenu="Cari Kart Yönetimi"></Baslik>
-      <CariForm
-        form={form}
-        onFormChange={handleFormChange}
-        onSubmit={handleSubmit}
-        onGrupSec={grupSecildi}
-      ></CariForm>
-      <CariList
-        cariler={cariler}
-        onKaldir={cariSilme}
-        onDuzenle={duzenleme}
-      ></CariList>
-    </>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <Baslik baslikMenu="Cari Kart Yönetimi"></Baslik>
+      <div className="flex flex-col md:flex-row gap-6">
+        <CariForm
+          form={form}
+          onFormChange={handleFormChange}
+          onSubmit={handleSubmit}
+          onGrupSec={grupSecildi}
+        ></CariForm>
+        <CariList
+          cariler={cariler}
+          onKaldir={cariSilme}
+          onDuzenle={duzenleme}
+        ></CariList>
+      </div>
+    </div>
   );
 }
 

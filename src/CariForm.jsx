@@ -1,59 +1,68 @@
-import React from "react";
 import { useState } from "react";
 import CariGrupModal from "./CariGrupModal";
 
+//stiller
+const INPUT_STYLE = "border border-gray-300 rounded px-3 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-400";
+const BTN_PRIMARY = "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium";
 
 function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
-
-  const [modalAcik, setModalAcik]=useState(false);
+  const [modalAcik, setModalAcik] = useState(false);
 
   return (
-    <>
-      <input
-        type="text"
-        name="unvan"
-        placeholder="Ünvan yazınız"
-        value={form.unvan}
-        onChange={onFormChange}
-      />
-      <p>Unvan: {form.unvan}</p>
+    <div className="bg-white rounded-lg shadow p-5 mb-6 max-w-md">
+      <h2 className="text-lg font-semibold mb-4">Cari Ekle / Düzenle</h2>
+      <div className="flex flex-col gap-3">
+        <div>
+          <label className="block text-sm mb-1">Ünvan</label>
+          <input type="text" name="unvan" value={form.unvan} onChange={onFormChange} className={INPUT_STYLE} />
+        </div>
 
-      <input
-        type="text"
-        name="vergiNo"
-        placeholder="vergi no giriniz"
-        value={form.vergiNo}
-        onChange={onFormChange}
-      />
-      <p>Vergi No: {form.vergiNo}</p>
+        <div>
+          <label className="block text-sm mb-1">Vergi No</label>
+          <input type="text" name="vergiNo" value={form.vergiNo} onChange={onFormChange} className={INPUT_STYLE} />
+        </div>
 
-      <input
-        type="text"
-        name="sehir"
-        placeholder="Sehri giriniz"
-        value={form.sehir}
-        onChange={onFormChange}
-      />
+        <div>
+          <label className="block text-sm mb-1">Şehir</label>
+          <input type="text" name="sehir" value={form.sehir} onChange={onFormChange} className={INPUT_STYLE} />
+        </div>
 
-      <p>Sehir: {form.sehir} </p>
+        <div>
+          <label className="block text-sm mb-1">Cari Tipi</label>
+          <select name="caritip" value={form.caritip} onChange={onFormChange} className={INPUT_STYLE}>
+            <option value="Müşteri">Müşteri</option>
+            <option value="Tedarikçi">Tedarikçi</option>
+          </select>
+        </div>
 
-      <select name="caritip" value={form.caritip} onChange={onFormChange}>
-        <option value="Müşteri">Müşteri</option>
-        <option value="Tedarikçi">Tedarikçi</option>
-      </select>
-      <p>Cari Tipi: {form.caritip}</p>
+        <div>
+          <label className="block text-sm mb-1">Durum</label>
+          <select name="durum" value={form.durum} onChange={onFormChange} className={INPUT_STYLE}>
+            <option value="Aktif">Aktif</option>
+            <option value="Pasif">Pasif</option>
+          </select>
+        </div>
 
-      <select name="durum" value={form.durum} onChange={onFormChange}>
-        <option value="Aktif">Aktif</option>
-        <option value="Pasif">Pasif</option>
-      </select>
+        <div>
+          <label className="block text-sm mb-1">Cari Grubu</label>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">{form.grupAdi || "Seçilmedi"}</span>
+            <button type="button" onClick={() => setModalAcik(true)} className="text-blue-600 hover:underline text-sm">
+              Grup Seç
+            </button>
+          </div>
+        </div>
 
-      <p>Durum:{form.durum}</p>
-      <button onClick={onSubmit}>Kaydet</button>
-      <button onClick={()=> setModalAcik(true)}>Grup Seç</button>
-      {modalAcik && <CariGrupModal onKapat={()=>setModalAcik(false)}
-        onSec={onGrupSec}/>}
-    </>
+        <button onClick={onSubmit} className={BTN_PRIMARY}>Kaydet</button>
+      </div>
+
+      {modalAcik && (
+        <CariGrupModal
+          onKapat={() => setModalAcik(false)}
+          onSec={onGrupSec}
+        />
+      )}
+    </div>
   );
 }
 
