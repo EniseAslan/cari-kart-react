@@ -19,7 +19,7 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
 
         <div>
           <label className="block text-sm mb-1">Vergi No</label>
-          <input type="text" name="vergiNo" value={form.vergiNo} onChange={onFormChange} className={INPUT_STYLE} />
+          <input type="text" name="vergiNo" value={form.vergiNo} onChange={onFormChange} className={INPUT_STYLE} maxLength={11} inputMode="numeric" />
         </div>
 
         <div>

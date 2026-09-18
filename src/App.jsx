@@ -52,9 +52,10 @@ function App() {
     const { name, value } = e.target;
 
     if (name === "vergiNo") {
-      if (value === "" || !isNaN(value)) {
-        setForm((prev) => ({ ...prev, vergiNo: value }));
-      }
+      const kontrol =value.replace(/\D/g, "");
+
+        setForm((prev) => ({ ...prev, vergiNo: kontrol }));
+      
       return;
     }
 
