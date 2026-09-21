@@ -17,7 +17,10 @@ function App() {
 
   const [cariler, setCariler] = useState([]);
   const [duzenlenenCari, setduzenlenenCari] = useState(null);
-  const [bildirim, setBildirim]=useState("");
+  const [bildirim, setBildirim] = useState("");
+  const [arama, setArama] = useState("");
+  const [tip, setTip] = useState("Tümü");
+  const [durumFiltre, setDurumFiltre] = useState("Tümü");
 
   useEffect(() => {
     const mockVeri = [
@@ -53,10 +56,10 @@ function App() {
     const { name, value } = e.target;
 
     if (name === "vergiNo") {
-      const kontrol =value.replace(/\D/g, "");
+      const kontrol = value.replace(/\D/g, "");
 
-        setForm((prev) => ({ ...prev, vergiNo: kontrol }));
-      
+      setForm((prev) => ({ ...prev, vergiNo: kontrol }));
+
       return;
     }
 
@@ -68,7 +71,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.unvan|| form.unvan.trim()=== ""){
+    if (!form.unvan || form.unvan.trim() === "") {
       alert("Ünvan alanı zorunludur");
       return;
     }
@@ -110,7 +113,7 @@ function App() {
   const cariSilme = (id) => {
     setCariler((prev) => prev.filter((cari) => cari.id !== id));
     setBildirim("Kayıt silindi!");
-    setTimeout(()=>setBildirim(""),3000);
+    setTimeout(() => setBildirim(""), 3000);
   };
 
   //düzenleme işlemi
@@ -137,8 +140,15 @@ function App() {
     }));
   };
 
-  const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
-  const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
+  // const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
+  // const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
+
+  const filtrelenmisCariler = cariler.filter((cari) => {
+    const unvanUyumlu = cari.unvan.toLowerCase().includes(arama.toLowerCase());
+    const tipUyumlu = tip === "Tümü" || cari.caritip === tip;
+    const durumUyumlu = durumFiltre === "Tümü" || cari.durum === durumFiltre;
+    return unvanUyumlu && tipUyumlu && durumUyumlu;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -146,8 +156,36 @@ function App() {
       {bildirim && (
         <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-sm">
           {bildirim}
-          </div>
+        </div>
       )}
+
+      <div className="bg-white rounded-lg shadow p-4 mb-6 flex flex-col md:flex-row gap-3">
+        <input
+          type="text"
+          placeholder="Ünvan Ara"
+          value={arama}
+          onChange={(e) => setArama(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <select
+          value={tip}
+          onChange={(e) => setTip(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="Tümü">Tüm Tipler</option>
+          <option value="Müşteri">Müşteri</option>
+          <option value="Tedarikçi">Tedarikçi</option>
+        </select>
+        <select
+          value={durumFiltre}
+          onChange={(e) => setDurumFiltre(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="Tümü">Tüm Durumlar</option>
+          <option value="Aktif">Aktif</option>
+          <option value="Pasif">Pasif</option>
+        </select>
+      </div>
       <div className="flex flex-col md:flex-row gap-6">
         <CariForm
           form={form}
@@ -155,11 +193,18 @@ function App() {
           onSubmit={handleSubmit}
           onGrupSec={grupSecildi}
         ></CariForm>
-        <CariList
-          cariler={cariler}
-          onKaldir={cariSilme}
-          onDuzenle={duzenleme}
-        ></CariList>
+
+        {filtrelenmisCariler.length === 0 ? (
+          <p className="text-gray-500 text-sm p-4 max-w-md">
+            Aramanızla eşleşen cari bulunamadı...
+          </p>
+        ) : (
+          <CariList
+            cariler={filtrelenmisCariler}
+            onKaldir={cariSilme}
+            onDuzenle={duzenleme}
+          ></CariList>
+        )}
       </div>
     </div>
   );
