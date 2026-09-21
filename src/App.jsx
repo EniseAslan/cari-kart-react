@@ -68,6 +68,11 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!form.unvan|| form.unvan.trim()=== ""){
+      alert("Ünvan alanı zorunludur");
+      return;
+    }
+
     if (form.vergiNo.length !== 10) {
       alert("Vergi No 10 haneli olmalıdır.");
       return;
