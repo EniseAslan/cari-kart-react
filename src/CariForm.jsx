@@ -14,7 +14,7 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
   return (
     <div className="bg-white rounded-lg shadow p-5 mb-6 max-w-md">
       <h2 className="text-lg font-semibold mb-4">Cari Ekle / Düzenle</h2>
-      <div className="flex flex-col gap-3">
+      <form onSubmit={onSubmit} className="flex flex-col gap-3">
         <div>
           <label className="block text-sm mb-1">Ünvan</label>
           <input
@@ -98,10 +98,10 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
           </div>
         </div>
 
-        <button onClick={onSubmit} className={BTN_PRIMARY}>
+        <button type="submit" className={BTN_PRIMARY}>
           Kaydet
         </button>
-      </div>
+      </form>
 
       {modalAcik && (
         <CariGrupModal onKapat={() => setModalAcik(false)} onSec={onGrupSec} />
