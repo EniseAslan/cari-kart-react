@@ -8,12 +8,21 @@ const INPUT_STYLE =
 const BTN_PRIMARY =
   "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium";
 
-function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
+function CariForm({
+  form,
+  onFormChange,
+  onSubmit,
+  onGrupSec,
+  duzenlemeModu,
+  onIptal,
+}) {
   const [modalAcik, setModalAcik] = useState(false);
 
   return (
     <div className="bg-white rounded-lg shadow p-5 mb-6 max-w-md">
-      <h2 className="text-lg font-semibold mb-4">Cari Ekle / Düzenle</h2>
+      <h2 className="text-lg font-semibold mb-4">
+        {duzenlemeModu ? "Cari Düzenle" : "Yeni Cari Ekle"}
+      </h2>
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         <div>
           <label className="block text-sm mb-1">Ünvan</label>
@@ -98,9 +107,21 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
           </div>
         </div>
 
-        <button type="submit" className={BTN_PRIMARY}>
-          Kaydet
-        </button>
+        <div className="flex gap-2">
+          <button type="submit" className={BTN_PRIMARY}>
+            {duzenlemeModu ? "Güncelle" : "Kaydet"}
+          </button>
+
+          {duzenlemeModu && (
+            <button
+              type="button"
+              onClick={onIptal}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium"
+            >
+              İptal
+            </button>
+          )}
+        </div>
       </form>
 
       {modalAcik && (

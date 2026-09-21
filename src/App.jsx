@@ -131,6 +131,19 @@ function App() {
       grupId: cari.grupId || null,
     });
   };
+  //iptal işlemi
+  const duzenlemeIptal = () => {
+    setduzenlenenCari(null);
+    setForm({
+      unvan: "",
+      vergiNo: "",
+      caritip: CARI_TIPLERI.MUSTERI,
+      sehir: "",
+      durum: CARI_DURUMLARI.AKTIF,
+      grupAdi: "",
+      grupId: null,
+    });
+  };
 
   //Grup seçme fonksiyonu
   const grupSecildi = (grup) => {
@@ -186,11 +199,11 @@ function App() {
           className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value={TUMU}>Tüm Durumlar</option>
-          {Object.values(CARI_DURUMLARI).map((d) => {
+          {Object.values(CARI_DURUMLARI).map((d) => (
             <option key={d} value={d}>
               {d}
-            </option>;
-          })}
+            </option>
+          ))}
         </select>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
@@ -199,6 +212,8 @@ function App() {
           onFormChange={handleFormChange}
           onSubmit={handleSubmit}
           onGrupSec={grupSecildi}
+          duzenlemeModu={duzenlenenCari !== null}
+          onIptal={duzenlemeIptal}
         ></CariForm>
 
         {filtrelenmisCariler.length === 0 ? (
