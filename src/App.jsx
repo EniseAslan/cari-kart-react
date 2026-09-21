@@ -17,6 +17,7 @@ function App() {
 
   const [cariler, setCariler] = useState([]);
   const [duzenlenenCari, setduzenlenenCari] = useState(null);
+  const [bildirim, setBildirim]=useState("");
 
   useEffect(() => {
     const mockVeri = [
@@ -103,6 +104,8 @@ function App() {
 
   const cariSilme = (id) => {
     setCariler((prev) => prev.filter((cari) => cari.id !== id));
+    setBildirim("Kayıt silindi!");
+    setTimeout(()=>setBildirim(""),3000);
   };
 
   //düzenleme işlemi
@@ -135,6 +138,11 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <Baslik baslikMenu="Cari Kart Yönetimi"></Baslik>
+      {bildirim && (
+        <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-sm">
+          {bildirim}
+          </div>
+      )}
       <div className="flex flex-col md:flex-row gap-6">
         <CariForm
           form={form}
