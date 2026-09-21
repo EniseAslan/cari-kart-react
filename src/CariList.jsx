@@ -1,8 +1,13 @@
 import CariCard from "./CariCard";
+import { CARI_DURUMLARI } from "./constants/cariEnums";
 
 function CariList({ cariler, onKaldir, onDuzenle }) {
-  const aktifCari = cariler.filter((cari) => cari.durum === "Aktif");
-  const pasifCari = cariler.filter((cari) => cari.durum === "Pasif");
+  const aktifCari = cariler.filter(
+    (cari) => cari.durum === CARI_DURUMLARI.AKTIF,
+  );
+  const pasifCari = cariler.filter(
+    (cari) => cari.durum === CARI_DURUMLARI.PASIF,
+  );
 
   return (
     <div className="max-w-md">

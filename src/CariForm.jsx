@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CariGrupModal from "./CariGrupModal";
+import { CARI_DURUMLARI, CARI_TIPLERI } from "./constants/cariEnums";
 
 //stiller
 const INPUT_STYLE =
@@ -57,8 +58,11 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
             onChange={onFormChange}
             className={INPUT_STYLE}
           >
-            <option value="Müşteri">Müşteri</option>
-            <option value="Tedarikçi">Tedarikçi</option>
+            {Object.values(CARI_TIPLERI).map((tip) => (
+              <option key={tip} value={tip}>
+                {tip}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -70,8 +74,11 @@ function CariForm({ form, onFormChange, onSubmit, onGrupSec }) {
             onChange={onFormChange}
             className={INPUT_STYLE}
           >
-            <option value="Aktif">Aktif</option>
-            <option value="Pasif">Pasif</option>
+            {Object.values(CARI_DURUMLARI).map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
           </select>
         </div>
 

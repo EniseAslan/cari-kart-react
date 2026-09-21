@@ -3,14 +3,15 @@ import Baslik from "./Baslik";
 import CariList from "./CariList";
 import "./App.css";
 import CariForm from "./CariForm";
+import { CARI_DURUMLARI, CARI_TIPLERI, TUMU } from "./constants/cariEnums";
 
 function App() {
   const [form, setForm] = useState({
     unvan: "",
     vergiNo: "",
-    caritip: "Müşteri",
+    caritip: CARI_TIPLERI.MUSTERI,
     sehir: "",
-    durum: "Aktif",
+    durum: CARI_DURUMLARI.AKTIF,
     grupAdi: "",
     grupId: null,
   });
@@ -19,8 +20,8 @@ function App() {
   const [duzenlenenCari, setduzenlenenCari] = useState(null);
   const [bildirim, setBildirim] = useState("");
   const [arama, setArama] = useState("");
-  const [tip, setTip] = useState("Tümü");
-  const [durumFiltre, setDurumFiltre] = useState("Tümü");
+  const [tip, setTip] = useState(TUMU);
+  const [durumFiltre, setDurumFiltre] = useState(TUMU);
 
   useEffect(() => {
     const mockVeri = [
@@ -28,24 +29,24 @@ function App() {
         id: 1,
         unvan: "FEMA Yazılım",
         vergiNo: "1023456789",
-        caritip: "Müşteri",
-        durum: "Aktif",
+        caritip: CARI_TIPLERI.MUSTERI,
+        durum: CARI_DURUMLARI.AKTIF,
         sehir: "İstanbul",
       },
       {
         id: 2,
         unvan: "ABC Teknoloji",
         vergiNo: "9876543210",
-        caritip: "Tedarikçi",
-        durum: "Pasif",
+        caritip: CARI_TIPLERI.TEDARIKCI,
+        durum: CARI_DURUMLARI.PASIF,
         sehir: "Ankara",
       },
       {
         id: 3,
         unvan: "DEF Bilişim",
         vergiNo: "1234567890",
-        caritip: "Müşteri",
-        durum: "Aktif",
+        caritip: CARI_TIPLERI.MUSTERI,
+        durum: CARI_DURUMLARI.AKTIF,
         sehir: "Edirne",
       },
     ];
@@ -99,9 +100,9 @@ function App() {
     setForm({
       unvan: "",
       vergiNo: "",
-      caritip: "Müşteri",
+      caritip: CARI_TIPLERI.MUSTERI,
       sehir: "",
-      durum: "Aktif",
+      durum: CARI_DURUMLARI.AKTIF,
       grupAdi: "",
       grupId: null,
     });
@@ -145,8 +146,8 @@ function App() {
 
   const filtrelenmisCariler = cariler.filter((cari) => {
     const unvanUyumlu = cari.unvan.toLowerCase().includes(arama.toLowerCase());
-    const tipUyumlu = tip === "Tümü" || cari.caritip === tip;
-    const durumUyumlu = durumFiltre === "Tümü" || cari.durum === durumFiltre;
+    const tipUyumlu = tip === TUMU || cari.caritip === tip;
+    const durumUyumlu = durumFiltre === TUMU || cari.durum === durumFiltre;
     return unvanUyumlu && tipUyumlu && durumUyumlu;
   });
 
@@ -172,18 +173,24 @@ function App() {
           onChange={(e) => setTip(e.target.value)}
           className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
-          <option value="Tümü">Tüm Tipler</option>
-          <option value="Müşteri">Müşteri</option>
-          <option value="Tedarikçi">Tedarikçi</option>
+          <option value={TUMU}>Tüm Tipler</option>
+          {Object.values(CARI_TIPLERI).map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
         </select>
         <select
           value={durumFiltre}
           onChange={(e) => setDurumFiltre(e.target.value)}
           className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
-          <option value="Tümü">Tüm Durumlar</option>
-          <option value="Aktif">Aktif</option>
-          <option value="Pasif">Pasif</option>
+          <option value={TUMU}>Tüm Durumlar</option>
+          {Object.values(CARI_DURUMLARI).map((d) => {
+            <option key={d} value={d}>
+              {d}
+            </option>;
+          })}
         </select>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
